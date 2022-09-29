@@ -5,26 +5,22 @@ import {
   Router,
   RouterStateSnapshot,
 } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Store } from "@ngrx/store";
+import { AppState } from "src/app/shared/store/app.state";
+import { LocalStorageUserService } from "../services/local-storage-user.service";
+import { isAuthenticated } from "../state/auth.selector";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class AuthGuard implements CanActivate {
-  constructor(readonly router: Router) {}
+  constructor(private store: Store<AppState>) {}
+
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    console.log(route, state);
-    // console.log(this.router.toString);
-    if (!confirm('Quieres entrar?')) {
-      this.router.navigate(['auth/login']);
-    }
-    return confirm('Quieres entrar?');
+    return this.store.select(isAuthenticated);
   }
 
-  canActivateChild(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): boolean {
+  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     return this.canActivate(route, state);
   }
 }

@@ -1,0 +1,49 @@
+<mat-grid-list cols="3">
+  <
+  <mat-card
+    style="width: 500px; margin: 0 auto; text-align: center; margin-top: 20px"
+  >
+    <mat-card-title>Login User</mat-card-title>
+    <mat-card-content>
+      <form [formGroup]="fb" (ngSubmit)="onSubmit()">
+        <div class="example-container">
+          <mat-label>Email: </mat-label>
+          <input
+            formControlName="email"
+            MatFormFieldContro
+            matInput
+            placeholder="pat@example.com"
+            required
+            type="email"
+          />
+          <mat-error *ngIf="fb.get('email')?.touched && !fb.get('email')?.valid"
+            >Mal email</mat-error
+          >
+        </div>
+        <div class="example-container">
+          <mat-label>Password: </mat-label>
+          <input
+            formControlName="password"
+            MatFormFieldContro
+            matInput
+            placeholder="*****"
+            required
+            type="password"
+          />
+          <mat-error
+            *ngIf="fb.get('password')?.touched && !fb.get('password')?.valid"
+            >Mala contraseña</mat-error
+          >
+        </div>
+        <button
+          mat-raised-button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="!fb.valid"
+        >
+          Enviar
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</mat-grid-list>

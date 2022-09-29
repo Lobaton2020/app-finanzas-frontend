@@ -1,28 +1,33 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
   HttpInterceptor,
-} from '@angular/common/http';
-import { Observable, tap, catchError, throwError } from 'rxjs';
+  HttpHeaders,
+} from "@angular/common/http";
+import { Observable, exhaustMap } from "rxjs";
+import { AppState } from "src/app/shared/store/app.state";
+import { Store } from "@ngrx/store";
+import { getToken } from "../state/auth.selector";
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-  constructor() {}
-  //TESTING
+  constructor(private store: Store<AppState>) {}
   intercept(
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    // console.log(request, 'TEST_______________________');
-    // return next.handle(request).pipe(
-    //   tap((res) => console.log(res, 'respuesta')),
-    //   catchError((e: any) => {
-    //     alert('ERROR!');
-    //     return throwError(() => new Error(e.message));
-    //   })
-    // );
-    return next.handle(request);
+    return this.store.select(getToken).pipe(
+      exhaustMap((token: string) => {
+        if (!token) {
+          return next.handle(request);
+        }
+        const copyRequest = request.clone({
+          headers: request.headers.set("Authorization", `Bearer ${token}`),
+        });
+        return next.handle(copyRequest);
+      })
+    );
   }
 }

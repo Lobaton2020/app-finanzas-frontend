@@ -1,1 +1,12 @@
 <p>inflow works!</p>
+<ng-container *ngIf="(inflows$ | async).length == 0; else renderInflows">
+<p > No hay info por mostrar</p>
+</ng-container>
+<ng-template #renderInflows>
+    <ul>
+        <li *ngFor="let inflow of inflows$ | async">{{ inflow.name }}</li>
+    </ul>
+</ng-template>
+
+<button mat-button (click)="load()">Load</button>
+<a [routerLink]="['/home']" routerLinkActive="router-link-active">Regresar</a>

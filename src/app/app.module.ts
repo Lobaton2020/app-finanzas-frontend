@@ -10,15 +10,19 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './auth/interceptors/token.interceptor';
 import { TimerInterceptor } from './common/interceptors/timer.interceptor';
 import { ErrorInterceptor } from './common/interceptors/error.interceptor';
-import { LoggerService } from './common/services/logger.service';
-import { NbPasswordAuthStrategy, NbAuthModule } from '@nebular/auth';
-import {
-  NbMenuModule,
-  NbSidebarModule,
-  NbThemeModule,
-  NbThemeService,
-} from '@nebular/theme';
-import { NbEvaIconsModule } from '@nebular/eva-icons';
+import { LoggerService } from "./common/services/logger.service";
+
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { MaterialUiModule } from "./shared/material-ui/material-ui.module";
+import { EffectsModule } from "@ngrx/effects";
+import { AuthEffect } from "./auth/state/auth.effect";
+import { StoreModule } from "@ngrx/store";
+import { appReducer } from "./shared/store/app.state";
+import { StoreDevtoolsModule } from "@ngrx/store-devtools";
+import { environment } from "src/environments/environment";
+import { StoreRouterConnectingModule } from "@ngrx/router-store";
+import { CustomSerializer } from "./shared/store/router/custom-serializer";
+import { RouterModule } from "@angular/router";
 
 @NgModule({
   declarations: [
@@ -28,24 +32,22 @@ import { NbEvaIconsModule } from '@nebular/eva-icons';
     HomeComponent,
   ],
   imports: [
+    BrowserAnimationsModule,
     BrowserModule,
+    MaterialUiModule,
     AppRoutingModule,
     HttpClientModule,
-    NbEvaIconsModule,
-    NbThemeModule.forRoot(),
-    NbSidebarModule.forRoot(),
-    NbMenuModule.forRoot(),
-    NbAuthModule.forRoot({
-      strategies: [
-        NbPasswordAuthStrategy.setup({
-          name: 'email',
-        }),
-      ],
-      forms: {},
+    RouterModule,
+    EffectsModule.forRoot([AuthEffect]),
+    StoreModule.forRoot(appReducer),
+    StoreDevtoolsModule.instrument({
+      logOnly: environment.production,
+    }),
+    StoreRouterConnectingModule.forRoot({
+      serializer: CustomSerializer,
     }),
   ],
   providers: [
-    NbThemeService,
     LoggerService,
     {
       provide: HTTP_INTERCEPTORS,
