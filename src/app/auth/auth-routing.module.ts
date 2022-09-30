@@ -1,27 +1,24 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-// import { LoginComponent } from './components/login/login.component';
-// import { RegisterComponent } from './components/register/register.component';
-
-// const routes: Routes = [
-//   {
-//     path: '',
-//     children: [
-//       { path: 'login', component: LoginComponent },
-//       { path: 'register', component: RegisterComponent },
-//     ],
-//   },
+import { RouterModule, Routes } from "@angular/router";
 import { RegisterComponent } from "./components/register/register.component";
 import { LoginComponent } from "./components/login/login.component";
+import { RouteLogin, RouteRegister } from "../shared/config/routes";
+import { AuthLayoutComponent } from "./components/auth-layout/auth-layout.component";
 
 export const routes: Routes = [
   {
-    path: "login",
-    component: LoginComponent,
-  },
-  {
-    path: "register",
-    component: RegisterComponent,
+    path: "",
+    component: AuthLayoutComponent,
+    children: [
+      {
+        path: RouteLogin,
+        component: LoginComponent,
+      },
+      {
+        path: RouteRegister,
+        component: RegisterComponent,
+      },
+    ],
   },
   // {
   //   path: "logout",

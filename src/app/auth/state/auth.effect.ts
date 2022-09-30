@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
+import * as Routes from "../../shared/config/routes";
 import {
   catchError,
   exhaustMap,
@@ -11,7 +12,10 @@ import {
   throwError,
 } from "rxjs";
 import { AppState } from "src/app/shared/store/app.state";
-import { setErrorMessage } from "src/app/shared/store/shared/shared.action";
+import {
+  setLoadingSpinner,
+  setNotifyMessage,
+} from "src/app/shared/store/shared/shared.action";
 import { AuthService } from "../services/auth.service";
 import {
   LoginPayload,
@@ -28,6 +32,9 @@ import { LoginResponse } from "../models/login-response.interface";
 import { Router } from "@angular/router";
 import { isUserAuthenticated } from "./auth.selector";
 import { User } from "../models/user";
+import { Observable } from "rxjs";
+import { getErrorMessage } from "../util/getErrorMessage";
+
 @Injectable()
 export class AuthEffect {
   constructor(
@@ -37,7 +44,7 @@ export class AuthEffect {
     private localStorateService: LocalStorageUserService,
     private router: Router
   ) {}
-  login$ = createEffect(() => {
+  loginStart$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loginStart),
       map(({ email, password }) => ({ email, password })),
@@ -48,9 +55,12 @@ export class AuthEffect {
             const user = this.authService.formatUser(data, jwtPayload);
             this.localStorateService.set(user);
             this.authService.runTimeoutRefreshToken(user);
+            this.store.dispatch(setLoadingSpinner({ status: false }));
             return loginSuccess({ user, redirect: true });
           }),
-          catchError((e) => of(setErrorMessage({ message: e.message })))
+          catchError((e) =>
+            of(setNotifyMessage({ message: getErrorMessage(e) }))
+          )
         );
       })
     );
@@ -81,7 +91,7 @@ export class AuthEffect {
         tap(() =>
           console.log("Se ha actualizado el usuario antes de cerrar sesion")
         ),
-        catchError((e) => of(setErrorMessage({ message: e.message })))
+        catchError((e) => of(setNotifyMessage({ message: getErrorMessage(e) })))
       );
     },
     {
@@ -95,7 +105,7 @@ export class AuthEffect {
         ofType(loginSuccess),
         tap((action) => {
           if (action.redirect) {
-            this.router.navigate(["/home"]);
+            this.router.navigate([Routes.RouteHome]);
           }
           return of({});
         })
@@ -111,7 +121,10 @@ export class AuthEffect {
         tap(() => {
           this.authService.logout();
           this.localStorateService.remove();
-          this.router.navigate(["/"]);
+          return this.router.navigate([
+            Routes.RouteAuthModule,
+            Routes.RouteLogin,
+          ]);
         })
       );
     },
@@ -124,7 +137,10 @@ export class AuthEffect {
         ofType(verifySession),
         tap(() => {
           if (!isUserAuthenticated()) {
-            return this.router.navigate(["/"]);
+            return this.router.navigate([
+              Routes.RouteAuthModule,
+              Routes.RouteLogin,
+            ]);
           }
           return this.authService.runTimeoutRefreshToken(
             this.localStorateService.get() as User

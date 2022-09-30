@@ -1,1 +1,6 @@
+<mat-progress-bar
+  *ngIf="loadBarProgress$ | async"
+  class="bar-progress"
+  mode="indeterminate"
+></mat-progress-bar>
 <router-outlet></router-outlet>

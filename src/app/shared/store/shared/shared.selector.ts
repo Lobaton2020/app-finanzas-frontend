@@ -8,6 +8,10 @@ export const getLoading = createSelector(getSharedState, (state) => {
   return state.showLoading;
 });
 
-export const getErrorMessage = createSelector(getSharedState, (state) => {
-  return state.errorMessage;
+export const getNotifyMessage = createSelector(getSharedState, (state) => {
+  const isError = state.notifyMessage.isError;
+  return [
+    state.notifyMessage.show,
+    `${isError ? "ERROR: " : ""}${state.notifyMessage.message}`,
+  ];
 });

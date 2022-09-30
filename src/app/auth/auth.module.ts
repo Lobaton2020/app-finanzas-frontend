@@ -8,8 +8,9 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { MaterialUiModule } from "../shared/material-ui/material-ui.module";
 import { EffectsModule } from "@ngrx/effects";
+import { AuthLayoutComponent } from "./components/auth-layout/auth-layout.component";
 @NgModule({
-  declarations: [LoginComponent, RegisterComponent],
+  declarations: [LoginComponent, RegisterComponent, AuthLayoutComponent],
   imports: [
     CommonModule,
     FormsModule,

@@ -1,23 +1,25 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { Observable } from "rxjs";
+import { RequestHttpService } from "src/app/shared/services/request-http.service";
 import { AppState } from "src/app/shared/store/app.state";
 import { environment } from "src/environments/environment";
 import { LoginResponse } from "../models/login-response.interface";
 import { PayloadJwt } from "../models/payload-jwt";
 import { User } from "../models/user";
 import { LoginPayload, makeRefreshToken } from "../state/auth.action";
-
+import * as API from "../../shared/config/api";
 @Injectable({
   providedIn: "root",
 })
 export class AuthService {
-  private endpoingModule = "/auth";
-  private endpointLogin = "/signin";
-  private endpointRefresh = "/refreshToken";
+  private endpoingModule = "/" + API.ModuleAuth;
+  private endpointLogin = "/" + API.EndpointLogin;
+  private endpointRefresh = "/" + API.EndpointRefreshToken;
   private idTimeout: number | null = null;
-  constructor(private http: HttpClient, private store: Store<AppState>) {}
+  constructor(
+    private http: RequestHttpService,
+    private store: Store<AppState>
+  ) {}
 
   login(credentials: LoginPayload) {
     const url = `${environment.apiBaseUrl}${this.endpoingModule}${this.endpointLogin}`;

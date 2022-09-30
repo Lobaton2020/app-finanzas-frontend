@@ -1,20 +1,21 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { RouteDeposits, RouteInfowTypes } from "../shared/config/routes";
 import { DepositComponent } from './components/deposit/deposit.component';
 import { InflowTypeComponent } from './components/inflow-type/inflow-type.component';
 import { InflowComponent } from './components/inflow/inflow.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: "",
     component: InflowComponent,
   },
   {
-    path: 'deposits',
+    path: RouteDeposits,
     component: DepositComponent,
   },
   {
-    path: 'types',
+    path: RouteInfowTypes,
     component: InflowTypeComponent,
   },
 ];
