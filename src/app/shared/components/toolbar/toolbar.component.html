@@ -4,5 +4,8 @@
   </button>
   <h1 class="example-app-name">Finanzas.com</h1>
   <span class="separator"></span>
-  <button mat-button>User</button>
+  <button mat-button  [matMenuTriggerFor]="menu">User</button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="doLogout()">Cerrar sesion</button>
+  </mat-menu>
 </mat-toolbar>
