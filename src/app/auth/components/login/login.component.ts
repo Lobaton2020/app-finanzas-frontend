@@ -19,6 +19,7 @@ import { loginStart } from "../../state/auth.action";
 })
 export class LoginComponent implements OnInit {
   fg!: FormGroup;
+  hide: boolean = true;
 
   constructor(
     private store: Store<AppState>,
@@ -36,9 +37,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    const email = this.fg.value.email;
-    const password = this.fg.value.password;
     this.store.dispatch(setLoadingSpinner({ status: true }));
-    this.store.dispatch(loginStart({ email, password }));
+    this.store.dispatch(loginStart(this.fg.value));
   }
 }

@@ -1,12 +1,21 @@
-<p>inflow works!</p>
 <ng-container *ngIf="(inflows$ | async).length == 0; else renderInflows">
-<p > No hay info por mostrar</p>
+<p class="text-center w-100 mt-3"> No hay info por mostrar</p>
 </ng-container>
 <ng-template #renderInflows>
-    <ul>
-        <li *ngFor="let inflow of inflows$ | async">{{ inflow.name }}</li>
-    </ul>
+    <mat-accordion class="container" multi>
+    <mat-expansion-panel class="mx-2" *ngFor="let inflow of inflows$ | async">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ inflow.total }}
+        </mat-panel-title>
+        <mat-panel-description>
+            {{ inflow.description }}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+    </mat-expansion-panel>
+    </mat-accordion>
 </ng-template>
 
-<button mat-button (click)="load()">Load</button>
-<a [routerLink]="['/home']" routerLinkActive="router-link-active">Regresar</a>
+
+

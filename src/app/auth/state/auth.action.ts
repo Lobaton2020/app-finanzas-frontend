@@ -13,12 +13,17 @@ export interface LoginPayload {
 }
 
 export interface RegisterPayload extends LoginPayload {
-  name: string;
+  completeName: string;
 }
 export interface LoginSuccessPayload {
   user: any;
   redirect: boolean;
 }
+
+
+
+
+
 export const registerUser = createAction(
   REGISTER_USER,
   props<RegisterPayload>()

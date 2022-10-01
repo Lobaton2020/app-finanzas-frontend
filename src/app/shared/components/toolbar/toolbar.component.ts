@@ -1,7 +1,9 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { MatDrawer } from "@angular/material/sidenav";
 import { Store } from "@ngrx/store";
+import { Observable } from "rxjs";
 import { logout } from "src/app/auth/state/auth.action";
+import { getUsername } from "src/app/auth/state/auth.selector";
 import { AppState } from "../../store/app.state";
 
 @Component({
@@ -10,11 +12,13 @@ import { AppState } from "../../store/app.state";
   styleUrls: ["./toolbar.component.scss"],
 })
 export class ToolbarComponent implements OnInit {
-  [x: string]: any;
+  username$!: Observable<string>;
   @Input() sidenav!: MatDrawer;
   constructor(readonly store: Store<AppState>) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.username$ = this.store.select(getUsername);
+  }
   doLogout() {
     this.store.dispatch(logout());
   }

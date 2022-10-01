@@ -20,6 +20,11 @@ export const isAuthenticated = createSelector(getAuthState, (state) => {
   return isUserAuthenticated();
 });
 
+export const getUsername = createSelector(getAuthState, (state) => {
+  console.log(state.user);
+  return state.user?.name;
+});
+
 /**
  * Please be careful with: The instace user has some getter functions but i try to access to the accessToken directly and not using getters.
  */

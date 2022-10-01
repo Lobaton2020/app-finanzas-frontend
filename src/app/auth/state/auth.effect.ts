@@ -2,15 +2,7 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
 import * as Routes from "../../shared/config/routes";
-import {
-  catchError,
-  exhaustMap,
-  map,
-  mergeMap,
-  of,
-  tap,
-  throwError,
-} from "rxjs";
+import { catchError, map, of, switchMap, take, tap } from "rxjs";
 import { AppState } from "src/app/shared/store/app.state";
 import {
   setLoadingSpinner,
@@ -18,11 +10,11 @@ import {
 } from "src/app/shared/store/shared/shared.action";
 import { AuthService } from "../services/auth.service";
 import {
-  LoginPayload,
   loginStart,
   loginSuccess,
   logout,
   makeRefreshToken,
+  registerUser,
   verifySession,
 } from "./auth.action";
 import jwt_decode, { JwtPayload } from "jwt-decode";
@@ -32,9 +24,9 @@ import { LoginResponse } from "../models/login-response.interface";
 import { Router } from "@angular/router";
 import { isUserAuthenticated } from "./auth.selector";
 import { User } from "../models/user";
-import { Observable } from "rxjs";
-import { getErrorMessage } from "../util/getErrorMessage";
-
+import { getErrorLoginMessage } from "../errors/getErrorLoginMessage";
+import { getErrorRegisterMessage } from "../errors/getErrorRegisterMessage";
+let test = 0;
 @Injectable()
 export class AuthEffect {
   constructor(
@@ -48,8 +40,9 @@ export class AuthEffect {
     return this.actions$.pipe(
       ofType(loginStart),
       map(({ email, password }) => ({ email, password })),
-      mergeMap((credentials) => {
+      switchMap((credentials) => {
         return this.authService.login(credentials).pipe(
+          take(1),
           map((data: LoginResponse) => {
             const jwtPayload: PayloadJwt = jwt_decode(data.accessToken);
             const user = this.authService.formatUser(data, jwtPayload);
@@ -59,45 +52,66 @@ export class AuthEffect {
             return loginSuccess({ user, redirect: true });
           }),
           catchError((e) =>
-            of(setNotifyMessage({ message: getErrorMessage(e) }))
+            of(setNotifyMessage({ message: getErrorLoginMessage(e) }))
           )
         );
       })
     );
   });
 
-  refreshToken$ = createEffect(
-    () => {
-      return this.actions$.pipe(
-        ofType(makeRefreshToken),
-        exhaustMap((act) => {
-          const user = this.localStorateService.get();
-          if (!user) {
-            return throwError(
-              () => new Error("User doesn't exist on local, Please login")
+  refreshToken$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(makeRefreshToken),
+      switchMap((action) => {
+        const user = this.localStorateService.get() as any;
+        return this.authService.refreshToken(user["userRefreshToken"]).pipe(
+          take(1),
+          map((data: LoginResponse) => {
+            const jwtPayload: PayloadJwt = jwt_decode(data.accessToken);
+            const user = this.authService.formatUser(data, jwtPayload);
+            this.authService.runTimeoutRefreshToken(user);
+            this.localStorateService.set(user);
+            return loginSuccess({ user, redirect: false });
+          }),
+          catchError((e) =>
+            of(setNotifyMessage({ message: getErrorLoginMessage(e) }))
+          )
+        );
+      }),
+      catchError((e) =>
+        of(
+          setNotifyMessage({
+            message: getErrorLoginMessage(e),
+          })
+        )
+      )
+    );
+  });
+
+  registerUser$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(registerUser),
+      map(({ completeName, email, password }) => ({
+        completeName,
+        email,
+        password,
+      })),
+      switchMap((payload) => {
+        return this.authService.register(payload).pipe(
+          take(1),
+          map((result) => {
+            this.store.dispatch(
+              setNotifyMessage({ message: "Registrado con exito!" })
             );
-          }
-          return this.authService.refreshToken(user?.userRefreshToken).pipe(
-            map((data: LoginResponse) => {
-              const jwtPayload: PayloadJwt = jwt_decode(data.accessToken);
-              const user = this.authService.formatUser(data, jwtPayload);
-              this.authService.runTimeoutRefreshToken(user);
-              this.localStorateService.set(user);
-              this.store.dispatch(loginSuccess({ user, redirect: false }));
-              return of({});
-            })
-          );
-        }),
-        tap(() =>
-          console.log("Se ha actualizado el usuario antes de cerrar sesion")
-        ),
-        catchError((e) => of(setNotifyMessage({ message: getErrorMessage(e) })))
-      );
-    },
-    {
-      dispatch: false,
-    }
-  );
+            return loginStart(payload);
+          }),
+          catchError((e) =>
+            of(setNotifyMessage({ message: getErrorRegisterMessage(e) }))
+          )
+        );
+      })
+    );
+  });
 
   loginSuccess$ = createEffect(
     () => {
@@ -137,14 +151,16 @@ export class AuthEffect {
         ofType(verifySession),
         tap(() => {
           if (!isUserAuthenticated()) {
+            this.authService.logout();
+            this.localStorateService.remove();
             return this.router.navigate([
               Routes.RouteAuthModule,
               Routes.RouteLogin,
             ]);
           }
-          return this.authService.runTimeoutRefreshToken(
-            this.localStorateService.get() as User
-          );
+          const user = this.localStorateService.get();
+          this.store.dispatch(loginSuccess({ user: user, redirect: false }));
+          return this.authService.runTimeoutRefreshToken(user as User);
         })
       );
     },

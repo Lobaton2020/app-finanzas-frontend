@@ -6,6 +6,7 @@
   <span class="separator"></span>
   <button mat-button  [matMenuTriggerFor]="menu">User</button>
   <mat-menu #menu="matMenu">
+    <span mat-menu-item >{{ username$ | async }}</span>
     <button mat-menu-item (click)="doLogout()">Cerrar sesion</button>
   </mat-menu>
 </mat-toolbar>

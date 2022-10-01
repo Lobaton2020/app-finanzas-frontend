@@ -9,6 +9,7 @@ import { RouterModule } from "@angular/router";
 import { MaterialUiModule } from "../shared/material-ui/material-ui.module";
 import { EffectsModule } from "@ngrx/effects";
 import { AuthLayoutComponent } from "./components/auth-layout/auth-layout.component";
+import { AuthEffect } from "./state/auth.effect";
 @NgModule({
   declarations: [LoginComponent, RegisterComponent, AuthLayoutComponent],
   imports: [
@@ -19,7 +20,6 @@ import { AuthLayoutComponent } from "./components/auth-layout/auth-layout.compon
     AuthRoutingModule,
     FormsModule,
     RouterModule,
-    EffectsModule.forFeature(),
   ],
   providers: [],
 })
