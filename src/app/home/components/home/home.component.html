@@ -1,4 +1,36 @@
 
-<button (click)="logout()">Logout</button>
-<a [routerLink]="['/inflows']" routerLinkActive="router-link-active">Inflows</a>
-<p>Here we have all the charts and resume of out concume</p> -->
+<div class="row mt-2">
+    <div class="col-md-3">
+        <mat-card class="my-1">
+        <mat-card-title>Ingresos</mat-card-title>
+        <mat-card-content class="font-2">
+           $ {{ (resume$ | async)?.totalIngress | number }} COP
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-md-3">
+        <mat-card class="my-1">
+            <mat-card-title>Egresos</mat-card-title>
+            <mat-card-content class="font-2">
+               $ {{ (resume$ | async)?.totalEgress | number }} COP
+            </mat-card-content>
+          </mat-card>
+    </div>
+    <div class="col-md-3">
+        <mat-card class="my-1">
+            <mat-card-title>Disponible</mat-card-title>
+            <mat-card-content class="font-2">
+               $ {{ (resume$ | async)?.remainingMoney | number }} COP
+            </mat-card-content>
+          </mat-card>
+    </div>
+    <div class="col-md-3">
+        <mat-card class="my-1">
+            <mat-card-title>Count Ing/ Count Egr</mat-card-title>
+            <mat-card-content class="font-2">
+                {{ (resume$ | async)?.countIngress | number }} /
+                {{ (resume$ | async)?.countEgress | number }}
+            </mat-card-content>
+          </mat-card>
+    </div>
+</div>
