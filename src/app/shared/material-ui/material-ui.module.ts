@@ -15,6 +15,9 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatListModule } from "@angular/material/list";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatExpansionModule } from "@angular/material/expansion";
+import { MatTreeModule } from "@angular/material/tree";
+import { MatDialogModule } from "@angular/material/dialog";
+import { MatTabsModule } from "@angular/material/tabs";
 
 const MATERIAL_MODULES = [
   MatButtonModule,
@@ -32,6 +35,9 @@ const MATERIAL_MODULES = [
   MatListModule,
   MatMenuModule,
   MatExpansionModule,
+  MatTreeModule,
+  MatDialogModule,
+  MatTabsModule,
 ];
 @NgModule({
   declarations: [],

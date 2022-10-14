@@ -1,6 +1,7 @@
 <ng-container *ngIf="(inflows$ | async).length == 0; else renderInflows">
 <p class="text-center w-100 mt-3"> No hay info por mostrar</p>
 </ng-container>
+<a routerLink="create">Create</a>
 <ng-template #renderInflows>
     <mat-accordion class="container" multi>
     <mat-expansion-panel class="mx-2" *ngFor="let inflow of inflows$ | async">

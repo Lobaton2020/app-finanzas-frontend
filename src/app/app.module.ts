@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NotFoundComponent } from "./shared/components/not-found/not-found.component";
-import { InflowComponent } from "./inflows/components/inflow/inflow.component";
 import { HomeComponent } from "./home/components/home/home.component";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { TokenInterceptor } from "./auth/interceptors/token.interceptor";
@@ -25,13 +24,9 @@ import { CustomSerializer } from "./shared/store/router/custom-serializer";
 import { RouterModule } from "@angular/router";
 import { SharedModule } from "./shared/shared.module";
 
+
 @NgModule({
-  declarations: [
-    AppComponent,
-    NotFoundComponent,
-    InflowComponent,
-    HomeComponent,
-  ],
+  declarations: [AppComponent, NotFoundComponent, HomeComponent],
   imports: [
     BrowserAnimationsModule,
     BrowserModule,

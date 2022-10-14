@@ -10,16 +10,22 @@ const routes: Routes = [
     component: AdminLayoutComponent,
     children: [
       {
-        path: RoutesApp.RouteInflows,
-        loadChildren: () =>
-          import("./inflows/inflow.module").then((m) => m.InflowModule),
-        canActivate: [AuthGuard],
-      },
-      {
         path: RoutesApp.RouteHome,
         canActivate: [AuthGuard],
         loadChildren: () =>
           import("./home/home.module").then((m) => m.HomeModule),
+      },
+      {
+        path: RoutesApp.RouteInflows,
+        loadChildren: () =>
+          import("./inflows/inflows.module").then((m) => m.InflowsModule),
+        canActivate: [AuthGuard],
+      },
+      {
+        path: RoutesApp.RouteMovements,
+        loadChildren: () =>
+          import("./movements/movements.module").then((m) => m.MovementsModule),
+        canActivate: [AuthGuard],
       },
     ],
   },

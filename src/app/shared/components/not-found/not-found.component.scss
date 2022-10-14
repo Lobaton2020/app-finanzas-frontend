@@ -1,0 +1,18 @@
+.row{
+    position: fixed;
+    height: 16rem;
+    width: 20rem;
+    top:40%;
+    left: 50%;
+    margin-top: -8rem;
+    margin-left: -10rem;
+}
+
+.image-background{
+    width: 100%;
+    height: 100%;
+    background: url("/assets/img/error404.png");
+    background-position: center;
+    background-size: cover;
+    opacity: 0.6;
+}

@@ -1,14 +1,13 @@
-import { MediaMatcher } from "@angular/cdk/layout";
 import {
-  ChangeDetectorRef,
   Component,
   OnInit,
   Output,
   EventEmitter,
   ViewChild,
-  ElementRef,
 } from "@angular/core";
-import { MatDrawer, MatDrawerToggleResult } from "@angular/material/sidenav";
+import { MatDialog } from "@angular/material/dialog";
+import { MatDrawer } from "@angular/material/sidenav";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-sidenav",
@@ -21,11 +20,18 @@ export class SidenavComponent implements OnInit {
 
   @ViewChild("sidenav")
   sidenavElement: MatDrawer | undefined;
-
+  constructor(public router: Router, public dialog: MatDialog) {}
   ngOnInit(): void {
     setTimeout(() => this.sidenavElementNative.emit(this.sidenavElement), 0); // after execution of syncronous
   }
   hide() {
     this.sidenavElement?.toggle();
   }
+  handleRedirectionMovement(event: any) {
+    this.router.navigateByUrl(
+      `movements#${event.target.textContent?.toLowerCase().trim()}`
+    );
+    this.hide();
+  }
 }
+

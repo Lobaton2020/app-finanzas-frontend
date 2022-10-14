@@ -7,4 +7,5 @@ export const RouteInflows = "inflows";
 export const RouteDeposits = "deposits";
 export const RouteInfowTypes = "types";
 
-export const RouteHome = "home";
+export const RouteHome = "";
+export const RouteMovements = "movements";
