@@ -6,13 +6,25 @@ import { MovementsComponent } from "./movements.component";
 import { MovementLayoutComponent } from "./components/movement-layout/movement-layout.component";
 import { MaterialUiModule } from "@app/shared/material-ui/material-ui.module";
 import { MovementListComponent } from "./components/movement-list/movement-list.component";
+import { MovementCreateComponent } from "./components/movement-create/movement-create.component";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { EffectsModule } from "@ngrx/effects";
+import { MovementTypeEffect } from "./state/movement.effect";
 
 @NgModule({
   declarations: [
     MovementListComponent,
     MovementsComponent,
+    MovementCreateComponent,
     MovementLayoutComponent,
   ],
-  imports: [CommonModule, MaterialUiModule, MovementsRoutingModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MaterialUiModule,
+    MovementsRoutingModule,
+    ReactiveFormsModule,
+    EffectsModule.forFeature([MovementTypeEffect]),
+  ],
 })
 export class MovementsModule {}

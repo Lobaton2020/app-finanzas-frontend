@@ -1,1 +1,53 @@
-<p>movement-create works!</p>
+<div class="row">
+  <div class="col-md-4"></div>
+  <div class="col-md-4">
+    <mat-card class="my-5 text-center p-4 pb-4">
+      <mat-card-title class="mb-4 mt-0">Añadir tipo de movimiento</mat-card-title>
+      <mat-card-content>
+        <form [formGroup]="fg" (ngSubmit)="onSubmit()">
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Tipo de movimiento</mat-label>
+          <mat-select
+          formControlName="selectControl" >
+            <mat-option>-- Selecciona --</mat-option>
+            <mat-option
+              *ngFor="let movementType of movementsType"
+              [value]="movementType.key"
+            >
+              {{ movementType.value }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="(fg.get('selectControl')?.touched && !fg.get('selectControl')?.valid)">Elige un tipo de movimiento</mat-error>
+        </mat-form-field>
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Nombre: </mat-label>
+            <input
+              formControlName="name"
+              MatFormFieldContro
+              matInput
+              placeholder="ej: Empresa x"
+              required
+              type="text"
+            />
+            <mat-error
+              *ngIf="
+                (fg.get('name')?.touched && !fg.get('name')?.valid)
+              "
+              >Debes añadir un nombre</mat-error
+            >
+          </mat-form-field>
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            class="mt-2"
+            [disabled]="!fg.valid"
+          >
+            Crear tipo movimiento
+          </button>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="col-md-4"></div>
+</div>

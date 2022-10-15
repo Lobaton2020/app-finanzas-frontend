@@ -18,6 +18,7 @@ import { MatExpansionModule } from "@angular/material/expansion";
 import { MatTreeModule } from "@angular/material/tree";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatTabsModule } from "@angular/material/tabs";
+import { MatSelectModule } from "@angular/material/select";
 
 const MATERIAL_MODULES = [
   MatButtonModule,
@@ -38,6 +39,7 @@ const MATERIAL_MODULES = [
   MatTreeModule,
   MatDialogModule,
   MatTabsModule,
+  MatSelectModule,
 ];
 @NgModule({
   declarations: [],

@@ -1,3 +1,6 @@
+import { MovementReducer } from "@app/movements/state/movement.reducer";
+import { MOVEMENT_STATE_NAME } from "@app/movements/state/movement.select";
+import { MovementsTypeState } from "@app/movements/state/movement.state";
 import { routerReducer, RouterReducerState } from "@ngrx/router-store";
 import { AuthReducer } from "src/app/auth/state/auth.reducer";
 import { AUTH_STATE_NAME } from "src/app/auth/state/auth.selector";
@@ -17,6 +20,7 @@ export interface AppState {
   [AUTH_STATE_NAME]: AuthState;
   [INFLOW_STATE_NAME]: InflowState;
   [REPORT_STATE_NAME]: ReportState;
+  [MOVEMENT_STATE_NAME]: MovementsTypeState;
   router: RouterReducerState;
 }
 
@@ -25,5 +29,6 @@ export const appReducer = {
   [AUTH_STATE_NAME]: AuthReducer,
   [INFLOW_STATE_NAME]: InflowReducer,
   [REPORT_STATE_NAME]: ReportReducer,
+  [MOVEMENT_STATE_NAME]: MovementReducer,
   router: routerReducer,
 };

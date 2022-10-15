@@ -17,7 +17,7 @@ import { RegisterResponse } from "../models/register-response";
   providedIn: "root",
 })
 export class AuthService {
-  private endpoingModule = "/" + API.ModuleAuth;
+  private endpointModule = "/" + API.ModuleAuth;
   private endpointLogin = "/" + API.EndpointLogin;
   private endpointRefresh = "/" + API.EndpointRefreshToken;
   private endpointRegister = "/" + API.EndpointRegister;
@@ -28,15 +28,15 @@ export class AuthService {
   ) {}
 
   login(credentials: LoginPayload) {
-    const url = `${environment.apiBaseUrl}${this.endpoingModule}${this.endpointLogin}`;
+    const url = `${environment.apiBaseUrl}${this.endpointModule}${this.endpointLogin}`;
     return this.http.post<LoginResponse>(url, credentials);
   }
   refreshToken(refreshToken: string) {
-    const url = `${environment.apiBaseUrl}${this.endpoingModule}${this.endpointRefresh}`;
+    const url = `${environment.apiBaseUrl}${this.endpointModule}${this.endpointRefresh}`;
     return this.http.post<LoginResponse>(url, { refreshToken });
   }
   register(payload: RegisterPayload) {
-    const url = `${environment.apiBaseUrl}${this.endpoingModule}${this.endpointRegister}`;
+    const url = `${environment.apiBaseUrl}${this.endpointModule}${this.endpointRegister}`;
     return this.http.post<RegisterResponse>(url, payload);
   }
 
