@@ -1,0 +1,22 @@
+table {
+    width: 100%;
+  }
+
+  .mat-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+
+  td, th {
+    width: 25%;
+  }
+
+  mat-badge-hidden .mat-badge-content:empty {
+    display: inline-block;
+  }
+
+  .badge___status{
+    margin-right: 1rem;
+    width: 1rem;
+    height: 1rem;
+  }

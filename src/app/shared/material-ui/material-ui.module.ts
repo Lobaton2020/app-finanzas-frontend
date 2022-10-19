@@ -19,7 +19,10 @@ import { MatTreeModule } from "@angular/material/tree";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatSelectModule } from "@angular/material/select";
-
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 const MATERIAL_MODULES = [
   MatButtonModule,
   MatIconModule,
@@ -40,6 +43,10 @@ const MATERIAL_MODULES = [
   MatDialogModule,
   MatTabsModule,
   MatSelectModule,
+  MatPaginatorModule,
+  MatTableModule,
+  MatBadgeModule,
+  MatSlideToggleModule
 ];
 @NgModule({
   declarations: [],

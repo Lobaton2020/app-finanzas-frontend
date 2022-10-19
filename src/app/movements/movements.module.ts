@@ -10,6 +10,7 @@ import { MovementCreateComponent } from "./components/movement-create/movement-c
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { EffectsModule } from "@ngrx/effects";
 import { MovementTypeEffect } from "./state/movement.effect";
+import { MovementEditComponent } from './components/movement-edit/movement-edit.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { MovementTypeEffect } from "./state/movement.effect";
     MovementsComponent,
     MovementCreateComponent,
     MovementLayoutComponent,
+    MovementEditComponent,
   ],
   imports: [
     CommonModule,

@@ -1,0 +1,56 @@
+<div class="row">
+  <div class="col-md-4"></div>
+  <div class="col-md-4">
+    <mat-card class="my-5 text-center pt-4 pb-4">
+      <mat-card-title class="mb-4 mt-0"
+        >Edicion tipo de movimeinto de
+        {{
+          selectControl?.includes(typeEgress.toLowerCase())
+            ? "egreso"
+            : "ingreso"
+        }}</mat-card-title
+      >
+      <mat-card-content>
+        <form [formGroup]="fg" (ngSubmit)="onSubmit()">
+          <div class="example-container">
+            <mat-form-field class="w-100" appearance="outline">
+              <mat-label>Nombre: </mat-label>
+              <input
+                formControlName="email"
+                MatFormFieldContro
+                matInput
+                placeholder="pat@example.com"
+                required
+                type="email"
+                [value]="fg.get('name')?.value"
+              />
+              <mat-error
+                *ngIf="fg.get('name')?.touched && !fg.get('name')?.valid"
+                >Debes añadir un nombre</mat-error
+              >
+            </mat-form-field>
+          </div>
+          <div>
+            <section>
+              <mat-slide-toggle
+                color="primary"
+                [checked]="fg.get('status')?.value"
+                >Estado del tipo de movimiento</mat-slide-toggle
+              >
+            </section>
+          </div>
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            class="mt-5"
+            [disabled]="!fg.valid"
+          >
+            Actualizar registro
+          </button>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="col-md-4"></div>
+</div>

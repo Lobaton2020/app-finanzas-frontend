@@ -11,24 +11,29 @@ import {
   loadMovementEgress,
   loadMovementIngress,
   PayloadCreateMovement,
+  PayloadUpdateMovementType,
+  updateMovementType,
 } from "./movement.action";
-import { catchError, exhaustMap, map, of, take } from "rxjs";
+import { catchError, exhaustMap, map, mergeMap, of, take, tap } from "rxjs";
 import { setNotifyMessage } from "@app/shared/store/shared/shared.action";
 import { getErrorMessage } from "@app/shared/errors/getErrorMessage";
 import { EntityListResponse } from "@app/shared/pagination/meta.interface";
 import { MovementType } from "../models/moovementListReponse";
+import { Router } from "@angular/router";
 @Injectable()
 export class MovementTypeEffect {
   constructor(
     private actions$: Actions,
     private store: Store<AppState>,
-    private movementTypeService: MovementTypeService
+    private movementTypeService: MovementTypeService,
+    private router: Router
   ) {}
 
   createMovementType$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(createMovementType),
-      exhaustMap((payload: PayloadCreateMovement) => {
+      mergeMap((payload: PayloadCreateMovement) => {
+        console.log("_:_::::::::::::::::::::::::::::::::_:_", payload)
         return this.movementTypeService.create(payload).pipe(
           take(1),
           map(() =>
@@ -66,6 +71,24 @@ export class MovementTypeEffect {
           map((data: EntityListResponse<MovementType>) =>
             loadedMovementEgress(data)
           ),
+          catchError((e) =>
+            of(setNotifyMessage({ message: getErrorMessage(e) }))
+          )
+        );
+      })
+    );
+  });
+
+  updateMovementType$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(updateMovementType),
+      exhaustMap((info: PayloadUpdateMovementType) => {
+        return this.movementTypeService.update(info).pipe(
+          take(1),
+          map((_) => {
+            this.router.navigateByUrl('/movements#' + info.selectControl)
+            return setNotifyMessage({ message: `Tipo de movimiento de ${info.selectControl} actualizado` })
+          }),
           catchError((e) =>
             of(setNotifyMessage({ message: getErrorMessage(e) }))
           )

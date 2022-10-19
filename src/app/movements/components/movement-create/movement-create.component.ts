@@ -10,6 +10,7 @@ import {
   TYPE_INGRESS,
 } from "@app/movements/services/movement-type.service";
 import { createMovementType } from "@app/movements/state/movement.action";
+import { resetFormGroupValidators } from '@app/shared/helpers/resetFormGroupValidators';
 import { AppState } from "@app/shared/store/app.state";
 import { setLoadingSpinner } from "@app/shared/store/shared/shared.action";
 import { Store } from "@ngrx/store";
@@ -44,8 +45,8 @@ export class MovementCreateComponent implements OnInit {
     });
   }
   onSubmit() {
-    this.fg.reset();
     this.store.dispatch(setLoadingSpinner({ status: true }));
-    this.store.dispatch(createMovementType(this.fg.value));
+    this.store.dispatch(createMovementType({...this.fg.value}));
+    resetFormGroupValidators(this.fg)
   }
 }

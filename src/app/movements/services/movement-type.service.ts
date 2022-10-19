@@ -5,7 +5,7 @@ import { RequestHttpService } from "@app/shared/services/request-http.service";
 import { environment } from "src/environments/environment";
 import { MovementType } from "../models/moovementListReponse";
 import { MovementCreateResponse } from "../models/movementCreateResponse";
-import { PayloadCreateMovement } from "../state/movement.action";
+import { PayloadCreateMovement, PayloadUpdateMovementType } from "../state/movement.action";
 
 export const TYPE_INGRESS = "INGRESS";
 export const TYPE_EGRESS = "EGRESS";
@@ -29,6 +29,12 @@ export class MovementTypeService {
     const resource = this.getNameResource(selectControl);
     const url = `${environment.apiBaseUrl}${resource}${this.endpointMovementType}`;
     return this.http.get<EntityListResponse<MovementType>>(url);
+  }
+
+  update(payload: PayloadUpdateMovementType) {
+    const resource = this.getNameResource(payload.selectControl);
+    const url = `${environment.apiBaseUrl}${resource}${this.endpointMovementType}`;
+    return this.http.put<PayloadUpdateMovementType>(url, { name: payload.name, status: payload.status });
   }
 
   private getNameResource(selectControl: string) {

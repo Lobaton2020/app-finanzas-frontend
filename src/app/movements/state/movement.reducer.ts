@@ -1,5 +1,7 @@
 import { createReducer, on } from "@ngrx/store";
-import { loadedMovementEgress, loadedMovementIngress } from "./movement.action";
+import { MovementType } from "../models/moovementListReponse";
+import { TYPE_INGRESS } from "../services/movement-type.service";
+import { loadedMovementEgress, loadedMovementIngress, loadMovementType } from "./movement.action";
 import { initialState } from "./movement.state";
 
 const _movementReducer = createReducer(
@@ -16,6 +18,34 @@ const _movementReducer = createReducer(
     return {
       ...state,
       movementsTypeIngress: rest,
+    };
+  }),
+
+  on(loadMovementType, (state, action: any) => {
+    let collectionType: MovementType[] = state.movementsTypeEgress.items;
+    if (action.selectControl.includes(TYPE_INGRESS.toLowerCase())) {
+      collectionType = state.movementsTypeIngress.items;
+    }
+    const result = collectionType.find((e) => e.id == action.id);
+    if (!result) {
+      console.error("The movementType doesn't exist and must exist on the list")
+      return {
+        ...state,
+        movementTypeDetail: {
+          ...state.movementTypeDetail,
+          selectControl: action.selectControl,
+          redirect: true
+        },
+      };
+    }
+    const movementTypeDetail = {
+      ...result,
+      selectControl: action.selectControl,
+      redirect: false
+    }
+    return {
+      ...state,
+      movementTypeDetail,
     };
   })
 );

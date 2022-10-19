@@ -1,6 +1,6 @@
 export interface MovementType {
-  name: string;
   id: number;
+  name: string;
   status: boolean;
 }
 

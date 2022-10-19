@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { MovementType } from "@app/movements/models/moovementListReponse";
 import {
   TYPE_EGRESS,
@@ -24,11 +24,12 @@ import { Observable } from "rxjs";
 })
 export class MovementLayoutComponent implements OnInit {
   selectedIndex!: number;
+  selectControl!: string;
   movementsTypeIngress$!: Observable<EntityListResponse<MovementType>>;
   movementsTypeEgress$!: Observable<EntityListResponse<MovementType>>;
   constructor(
     private readonly router: Router,
-    private readonly store: Store<AppState>
+    private readonly store: Store<AppState>,
   ) {
     router.events.forEach((event) => {
       this.verifyIndex();
@@ -38,14 +39,16 @@ export class MovementLayoutComponent implements OnInit {
 
   ngOnInit(): void {
     this.verifyIndex();
-    console.log("HELOOOO");
     this.loadTabDependsUserSee(this.selectedIndex);
   }
   verifyIndex() {
-    this.selectedIndex = window.location.hash.includes("#egresos") ? 1 : 0;
+    this.selectedIndex = window.location.hash?.toLowerCase().includes(TYPE_EGRESS.toLowerCase()) ? 1 : 0;
+    this.setSelectedMovementType()
+  }
+  setSelectedMovementType() {
+    this.selectControl = !!this.selectedIndex ? TYPE_EGRESS : TYPE_INGRESS
   }
   loadTabDependsUserSee(selectedIndex: number) {
-    console.log("LOAD DEPENDECIES");
     if (selectedIndex == 1) {
       this.store.dispatch(loadMovementEgress({ selectControl: TYPE_EGRESS }));
       this.movementsTypeEgress$ = this.store.select(getMovementTypeEgress);
@@ -56,6 +59,8 @@ export class MovementLayoutComponent implements OnInit {
   }
   handleChangeTab(index: number) {
     this.selectedIndex = index;
+    this.setSelectedMovementType()
     this.loadTabDependsUserSee(this.selectedIndex);
+
   }
 }

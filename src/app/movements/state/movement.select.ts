@@ -14,3 +14,10 @@ export const getMovementTypeEgress = createSelector(
   getMovementState,
   (state) => state.movementsTypeEgress
 );
+
+
+
+export const getMovementType = createSelector(
+  getMovementState,
+  (state) => state.movementTypeDetail
+);
