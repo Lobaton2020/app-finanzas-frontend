@@ -33,12 +33,12 @@ export class MovementTypeEffect {
     return this.actions$.pipe(
       ofType(createMovementType),
       mergeMap((payload: PayloadCreateMovement) => {
-        console.log("_:_::::::::::::::::::::::::::::::::_:_", payload)
         return this.movementTypeService.create(payload).pipe(
           take(1),
-          map(() =>
-            setNotifyMessage({ message: "Has añadido un tipo de movimiento" })
-          ),
+          map(() => {
+            this.router.navigateByUrl('/movements#' + payload.selectControl)
+            return setNotifyMessage({ message: "Has añadido un tipo de movimiento" })
+          }),
           catchError((e) =>
             of(setNotifyMessage({ message: getErrorMessage(e) }))
           )
@@ -50,7 +50,7 @@ export class MovementTypeEffect {
     return this.actions$.pipe(
       ofType(loadMovementIngress),
       exhaustMap((info: IMovementType) => {
-        return this.movementTypeService.findAll(info.selectControl).pipe(
+        return this.movementTypeService.findAll(info).pipe(
           take(1),
           map((data: EntityListResponse<MovementType>) =>
             loadedMovementIngress(data)
@@ -66,7 +66,7 @@ export class MovementTypeEffect {
     return this.actions$.pipe(
       ofType(loadMovementEgress),
       exhaustMap((info: IMovementType) => {
-        return this.movementTypeService.findAll(info.selectControl).pipe(
+        return this.movementTypeService.findAll(info).pipe(
           take(1),
           map((data: EntityListResponse<MovementType>) =>
             loadedMovementEgress(data)

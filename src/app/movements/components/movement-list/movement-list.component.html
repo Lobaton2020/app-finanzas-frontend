@@ -1,3 +1,4 @@
+<div class="mat-elevation-z8">
 <mat-form-field appearance="outline">
   <mat-label>Filter</mat-label>
   <input
@@ -42,7 +43,23 @@
   </tr>
 </table>
 
+<!-- <mat-paginator
+  [pageSizeOptions]="[1,5]"
+  [showFirstLastButtons]="true"
+  aria-label="Select page"
+>
+</mat-paginator> -->
+
 <mat-paginator
+  [length]="movementList?.meta?.totalItems"
+  [pageSize]="movementList?.meta?.itemsPerPage"
+  [pageSizeOptions]="[4]"
+  (page)="onPaginatorChange($event)"
+  [pageIndex]="movementList?.meta?.currentPage"
+  aria-label="Select page"
+>
+</mat-paginator>
+<!-- <mat-paginator
   [length]="length"
   [pageSize]="pageSize"
   [pageSizeOptions]="pageSizeOptions"
@@ -51,4 +68,6 @@
   [pageIndex]="movementList?.meta?.currentPage"
   aria-label="Select page"
 >
-</mat-paginator>
+</mat-paginator> -->
+</div>
+

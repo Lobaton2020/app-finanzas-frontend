@@ -17,7 +17,7 @@ import { Observable } from 'rxjs'
 export class MovementEditComponent implements OnInit {
   fg!: FormGroup
   id!: number;
-  movementType!: MovementType
+  movementType!: MovementType | any
   selectControl: string = ""
 
   typeEgress: string = TYPE_EGRESS;
@@ -33,8 +33,8 @@ export class MovementEditComponent implements OnInit {
     this.selectControl = this.activatedRoute.snapshot.paramMap.get("movementType") as string;
 
     this.fg = this.fb.group({
-      name: new FormControl(this.movementType?.name, [Validators.required, Validators.minLength(2)]),
-      status: new FormControl(this.movementType?.status, [Validators.required])
+      name: new FormControl("", [Validators.required, Validators.minLength(2)]),
+      status: new FormControl(false, [Validators.required])
     })
 
     this.store.dispatch(loadMovementType({ id: this.id, selectControl: this.selectControl }));
@@ -52,6 +52,6 @@ export class MovementEditComponent implements OnInit {
 
   onSubmit() {
     this.store.dispatch(setLoadingSpinner({ status: true }))
-    this.store.dispatch(updateMovementType({ ...this.fg.value, selectControl: this.selectControl }))
+    this.store.dispatch(updateMovementType({ ...this.fg.value, selectControl: this.selectControl.toUpperCase(), id: this.id }))
   }
 }

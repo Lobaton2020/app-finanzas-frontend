@@ -3,6 +3,8 @@ import { createAction, props } from "@ngrx/store";
 import { MovementResponse, MovementType } from "../models/moovementListReponse";
 export interface IMovementType {
   selectControl: string;
+  page?: number;
+  limit?: number
 }
 export interface PayloadCreateMovement extends IMovementType {
   name: string;
@@ -11,11 +13,14 @@ export interface IRedirectOnError {
   redirect: boolean
 }
 
-export interface PayloadUpdateMovementType extends IMovementType, PayloadCreateMovement {
+
+export interface PayloadId {
+  id: number
+}
+export interface PayloadUpdateMovementType extends IMovementType, PayloadCreateMovement, PayloadId {
   status: boolean
 }
-
-export type PayloadLoadMovementType = MovementType & IMovementType & IRedirectOnError;
+export type PayloadLoadMovementType = MovementType & IMovementType & IRedirectOnError & PayloadId;
 
 const CREATE_MOVEMENT = "[Movement Type] Create";
 const LOAD_MOVEMENT_INGRESS = "[Movement Type Ingress] Find all";
@@ -54,7 +59,7 @@ export const createMovementType = createAction(
 
 export const loadMovementType = createAction(
   GET_MOVEMENT,
-  props<IMovementType & { id: number }>()
+  props<IMovementType & PayloadId>()
 );
 
 
