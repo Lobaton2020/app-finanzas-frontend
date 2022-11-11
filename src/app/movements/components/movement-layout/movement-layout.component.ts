@@ -50,11 +50,15 @@ export class MovementLayoutComponent implements OnInit {
   }
   loadTabDependsUserSee(selectedIndex: number) {
     if (selectedIndex == 1) {
-      this.store.dispatch(loadMovementEgress({ selectControl: TYPE_EGRESS }));
+      this.store.dispatch(
+        loadMovementEgress({ selectControl: TYPE_EGRESS, limit: 10 })
+      );
       this.movementsTypeEgress$ = this.store.select(getMovementTypeEgress);
       return;
     }
-    this.store.dispatch(loadMovementIngress({ selectControl: TYPE_INGRESS }));
+    this.store.dispatch(
+      loadMovementIngress({ selectControl: TYPE_INGRESS, limit: 10 })
+    );
     this.movementsTypeIngress$ = this.store.select(getMovementTypeIngress);
   }
   handleChangeTab(index: number) {

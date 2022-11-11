@@ -51,11 +51,11 @@
 </mat-paginator> -->
 
 <mat-paginator
+  [pageSizeOptions]="[5, 10, 50, 100]"
   [length]="movementList?.meta?.totalItems"
-  [pageSize]="movementList?.meta?.itemsPerPage"
-  [pageSizeOptions]="[4]"
+  [pageSize]="10"
   (page)="onPaginatorChange($event)"
-  [pageIndex]="movementList?.meta?.currentPage"
+  [pageIndex]="(movementList?.meta?.currentPage ?? 1) - 1"
   aria-label="Select page"
 >
 </mat-paginator>
