@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import * as API from "@app/shared/config/api";
+import { buildQueryPaginator } from "@app/shared/pagination/helpers";
 import { EntityListResponse } from "@app/shared/pagination/meta.interface";
 import { RequestHttpService } from "@app/shared/services/request-http.service";
 import { environment } from "src/environments/environment";
@@ -29,27 +30,18 @@ export class MovementTypeService {
     console.log(payload)
     const resource = this.getNameResource(payload.selectControl);
     const url = `${environment.apiBaseUrl}${resource}${this.endpointMovementType}`;
-    return this.http.get<EntityListResponse<MovementType>>(url + this.buildQueryPaginator(payload.page as number, payload.limit as number));
+    return this.http.get<EntityListResponse<MovementType>>(
+      url + buildQueryPaginator(payload.page as number, payload.limit as number)
+    );
   }
 
   update(payload: PayloadUpdateMovementType) {
     const resource = this.getNameResource(payload.selectControl);
     const url = `${environment.apiBaseUrl}${resource}${this.endpointMovementType}/${payload.id}`;
-    return this.http.put<PayloadUpdateMovementType>(url, { name: payload.name, status: payload.status });
-  }
-  private buildQueryPaginator(page: number, limit: number) {
-    return `?page=${(page || 0) + 1}&limit=${limit || 0}`
-    // let query = "";
-    // if (page || page == 0) {
-    //   query += `page=${page}`
-    // }
-    // if (limit || limit == 0) {
-    //   query += (query ? "&" : "" )+ `limit=${limit}`
-    // }
-    // if (query) {
-    //   query = "?" + query
-    // }
-    // return query
+    return this.http.put<PayloadUpdateMovementType>(url, {
+      name: payload.name,
+      status: payload.status,
+    });
   }
   private getNameResource(selectControl: string) {
     let resource = this.endpointModuleOutflow;

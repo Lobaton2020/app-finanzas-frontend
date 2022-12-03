@@ -1,3 +1,6 @@
+import { DepositReducer } from "@app/inflows/pages/deposit/state/deposit.reducer";
+import { DEPOSIT_STATE_NAME } from "@app/inflows/pages/deposit/state/deposit.select";
+import { DepositState } from "@app/inflows/pages/deposit/state/deposit.state";
 import { MovementReducer } from "@app/movements/state/movement.reducer";
 import { MOVEMENT_STATE_NAME } from "@app/movements/state/movement.select";
 import { MovementsTypeState } from "@app/movements/state/movement.state";
@@ -21,6 +24,7 @@ export interface AppState {
   [INFLOW_STATE_NAME]: InflowState;
   [REPORT_STATE_NAME]: ReportState;
   [MOVEMENT_STATE_NAME]: MovementsTypeState;
+  [DEPOSIT_STATE_NAME]: DepositState;
   router: RouterReducerState;
 }
 
@@ -30,5 +34,6 @@ export const appReducer = {
   [INFLOW_STATE_NAME]: InflowReducer,
   [REPORT_STATE_NAME]: ReportReducer,
   [MOVEMENT_STATE_NAME]: MovementReducer,
+  [DEPOSIT_STATE_NAME]: DepositReducer,
   router: routerReducer,
 };

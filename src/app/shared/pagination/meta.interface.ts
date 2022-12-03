@@ -18,3 +18,8 @@ export class MetaPaginationModel implements MetaPagination {
   totalPages: number = 0;
   currentPage: number = 0;
 }
+
+export interface IPagination {
+  page?: number;
+  limit?: number;
+}

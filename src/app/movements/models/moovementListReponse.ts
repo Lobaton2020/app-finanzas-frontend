@@ -1,7 +1,5 @@
-export interface MovementType {
-  id: number;
-  name: string;
-  status: boolean;
-}
+import { IBasicName } from "@app/shared/entities/basicName.interface";
+
+export interface MovementType extends IBasicName {}
 
 export type MovementResponse = MovementType;
