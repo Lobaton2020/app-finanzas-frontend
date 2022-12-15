@@ -59,13 +59,14 @@ export const createMovementType = createAction(
   CREATE_MOVEMENT,
   props<PayloadCreateMovement>()
 );
+export const updateMovementType = createAction(
+  UPDATE_MOVEMENT,
+  props<PayloadUpdateMovementType>()
+);
+
 
 export const loadMovementType = createAction(
   GET_MOVEMENT,
   props<IMovementType & PayloadId>()
 );
 
-export const updateMovementType = createAction(
-  UPDATE_MOVEMENT,
-  props<PayloadUpdateMovementType>()
-);

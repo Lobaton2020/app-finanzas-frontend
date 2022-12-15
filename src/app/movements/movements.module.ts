@@ -23,9 +23,9 @@ import { MovementEditComponent } from './components/movement-edit/movement-edit.
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     MaterialUiModule,
     MovementsRoutingModule,
-    ReactiveFormsModule,
     EffectsModule.forFeature([MovementTypeEffect]),
   ],
 })

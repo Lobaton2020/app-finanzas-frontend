@@ -4,6 +4,7 @@ export interface IDeposit extends IPagination {}
 export interface Deposit {
   name: string;
 }
+export interface PayloadCreateDeposit extends Deposit {}
 export interface DepositState {
   deposits: Deposit[];
   depositDetail: unknown;
